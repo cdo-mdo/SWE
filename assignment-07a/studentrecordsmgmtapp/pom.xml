@@ -33,7 +33,7 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <mainClass>org.edu.miu.cs.cs452.studentrecordsmgmtapp.MyStudentRecordsMgmtApp</mainClass>
+                    <mainClass>org.edu.miu.cs.cs425.studentrecordsmgmtapp.MyStudentRecordsMgmtApp</mainClass>
                 </configuration>
             </plugin>
         </plugins>
