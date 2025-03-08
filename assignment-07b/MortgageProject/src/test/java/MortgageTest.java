@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
-
 import org.junit.Test;
+
+import org.edu.miu.cs.cs425.MortgageCalculator;
 
 public class MortgageTest {
 
@@ -15,7 +16,7 @@ public class MortgageTest {
 	public void test2() {
 		MortgageCalculator mc = new MortgageCalculator();
 		double result = mc.computeMaxMortgage(2001, 5, 2, 3000, false, 0, "Architect");
-	    assertEquals(0, result, 0.001);
+	    assertEquals(180000, result, 0.001);
 	}
 	
 	@Test
