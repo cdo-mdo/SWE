@@ -1,57 +1,45 @@
 package shoppingcart;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import products.Product;
 
 public class ShoppingCart {
-    List<CartLine> cardLines = new ArrayList<>();
+    Map<Product, Integer> products = new HashMap<>();
 
-    public void action(Product product, String action) {
-        if (action.equals("add")) {
-            for (CartLine cardLine : cardLines) {
-                if (cardLine.getProduct().getProductNumber().equals(product.getProductNumber())) {
-                    cardLine.setNumber(cardLine.getNumber() + 1);
-                    return;
-                }
-            }
-            CartLine cardLine = new CartLine();
-            cardLine.setProduct(product);
-            cardLine.setNumber(1);
-            cardLines.add(cardLine);
-        } else {
-            if (action.equals("remove")) {
-                Iterator<CartLine> iter = cardLines.iterator();
-                while (iter.hasNext()) {
-                    CartLine cline = iter.next();
-                    if (cline.getProduct().getProductNumber().equals(product.getProductNumber())) {
-                        if (cline.getNumber() > 1) {
-                            cline.setNumber(cline.getNumber() - 1);
-                        } else {
-                            iter.remove();
-                        }
-                    }
-                }
-            } else { //action is print
-                System.out.println("Content of the shopping cart:");
-                for (CartLine cardLine : cardLines) {
-                    System.out.println(cardLine.getNumber() + " "
-                            + cardLine.getProduct().getProductNumber() + " "
-                            + cardLine.getProduct().getDescription() + " "
-                            + cardLine.getProduct().getPrice());
-                }
-                System.out.println("Total price = " + getTotalPrice());
-            }
+    public void addProduct(Product product, int quantity) {
+        products.put(product, products.getOrDefault(product, 0) + quantity);
+    }
+
+    public void addProduct(Product product) {
+        products.put(product, products.getOrDefault(product, 0) + 1);
+    }
+
+    public void removeProduct(Product product) {
+        if (!products.containsKey(product)) {
+            return;
+        }
+
+        int count = products.get(product);
+        if (count > 1) {
+            products.put(product, count - 1);
+        }
+        else {
+            products.remove(product);
         }
     }
 
-    public double getTotalPrice() {
-        double totalPrice = 0.0;
-        for (CartLine cardLine : cardLines) {
-            totalPrice += (cardLine.getProduct().getPrice() * cardLine.getNumber());
+    public void print() {
+        System.out.println("Content of the shopping cart:");
+        double totalPrice = 0;
+        for (Map.Entry<Product, Integer> entry : products.entrySet()) {
+            Product product = entry.getKey();
+            totalPrice += product.getPrice();
+            System.out.println(entry.getValue() + " "
+                    + product.getProductNumber() + " "
+                    + product.getDescription() + " "
+                    + product.getPrice());
         }
-        return totalPrice;
+        System.out.println("Total price: " + totalPrice);
     }
 }
