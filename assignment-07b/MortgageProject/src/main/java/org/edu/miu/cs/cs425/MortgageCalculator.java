@@ -35,7 +35,7 @@ public class MortgageCalculator {
 	}
 
 	public double computeMaxMortgageMarried(LocalDate birthDate, double monthlyIncome, double monthlyIncomePartner, String profession) {
-		if (ChronoUnit.YEARS.between(birthDate, LocalDate.now()) < 18) {
+		if (ChronoUnit.YEARS.between(birthDate, LocalDate.now()) < AGE_TO_APPLY_MORTGAGE) {
 			return 0;
 		}
 
