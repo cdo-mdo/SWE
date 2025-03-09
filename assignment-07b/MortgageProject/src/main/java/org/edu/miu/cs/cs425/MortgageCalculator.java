@@ -3,11 +3,31 @@ package org.edu.miu.cs.cs425;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MortgageCalculator {
 
+	private static final int AGE_TO_APPLY_MORTGAGE = 18;
+
+	private static final double INCOME_LOW = 2000;
+	private static final double INCOME_MEDIUM = 3000;
+	private static final double INCOME_HIGH = 5000;
+	private static final Map<String, double[]> MORTGAGE_RANGES = new HashMap<>();
+
+	static {
+		MORTGAGE_RANGES.put("Developer", new double[] {160000, 180000, 220000});
+		MORTGAGE_RANGES.put("Architect", new double[] {160000, 180000, 220000});
+		MORTGAGE_RANGES.put("Scrum master", new double[] {160000, 180000, 220000});
+		MORTGAGE_RANGES.put("Tester", new double[] {120000, 140000, 160000});
+		MORTGAGE_RANGES.put("System Administrator", new double[] {120000, 140000, 160000});
+		MORTGAGE_RANGES.put("Technical writer", new double[] {120000, 140000, 160000});
+		MORTGAGE_RANGES.put("Department head", new double[] {220000, 250000, 280000});
+		MORTGAGE_RANGES.put("Professor", new double[] {220000, 250000, 280000});
+	}
+
 	public double computeMaxMortgageSingle(LocalDate birthDate, double monthlyIncome, String profession) {
-		if (ChronoUnit.YEARS.between(birthDate, LocalDate.now()) < 18) {
+		if (ChronoUnit.YEARS.between(birthDate, LocalDate.now()) < AGE_TO_APPLY_MORTGAGE) {
 			return 0;
 		}
 
@@ -24,27 +44,18 @@ public class MortgageCalculator {
 	}
 
 	private double computeMaxMortgage(double monthlyIncome, String profession) {
-		double result=0;
+		if (!MORTGAGE_RANGES.containsKey(profession)) {
+			return 0; // Default case if profession is not recognized
+		}
 
-		if (2000<=monthlyIncome && monthlyIncome<3000) {
-			if (profession.equals("Developer") || profession.equals("Architect") || profession.equals("Scrum master")) result = 160000;
-			if (profession.equals("Tester") || profession.equals("System Administrator") || profession.equals("Technical writer")) result = 120000;
-			if (profession.equals("Department head") || profession.equals("Professor") ) result = 220000;
-			return result;
-		}
-		if (3000<=monthlyIncome && monthlyIncome<5000) {
-			if (profession.equals("Developer") || profession.equals("Architect") || profession.equals("Scrum master")) result = 180000;
-			if (profession.equals("Tester") || profession.equals("System Administrator") || profession.equals("Technical writer")) result = 140000;
-			if (profession.equals("Department head") || profession.equals("Professor") ) result = 250000;
-			return result;
-		}
-		if (5000<=monthlyIncome) {
-			if (profession.equals("Developer") || profession.equals("Architect") || profession.equals("Scrum master")) result = 220000;
-			if (profession.equals("Tester") || profession.equals("System Administrator") || profession.equals("Technical writer")) result = 160000;
-			if (profession.equals("Department head") || profession.equals("Professor") ) result = 280000;
-			return result;
-		}
-		return result;
+		int incomeBracket = getIncomeBracket(monthlyIncome);
+		return MORTGAGE_RANGES.get(profession)[incomeBracket];
 	}
 
+	private int getIncomeBracket(double monthlyIncome) {
+		if (monthlyIncome >= INCOME_HIGH) return 2;  // High income
+		if (monthlyIncome >= INCOME_MEDIUM) return 1; // Medium income
+		if (monthlyIncome >= INCOME_LOW) return 0;  // Low income
+		return -1;  // Income below threshold
+	}
 }
