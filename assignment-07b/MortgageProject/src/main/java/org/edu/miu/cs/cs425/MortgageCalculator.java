@@ -1,7 +1,6 @@
 package org.edu.miu.cs.cs425;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.Map;
 public class MortgageCalculator {
 
 	private static final int AGE_TO_APPLY_MORTGAGE = 18;
+	private static final double ADJUSTMENT_FACTOR = 0.94;
 
 	private static final double INCOME_LOW = 2000;
 	private static final double INCOME_MEDIUM = 3000;
@@ -39,7 +39,7 @@ public class MortgageCalculator {
 			return 0;
 		}
 
- 		double totalIncome = monthlyIncome + monthlyIncomePartner * 0.94;
+ 		double totalIncome = monthlyIncome + monthlyIncomePartner * ADJUSTMENT_FACTOR;
 		return computeMaxMortgage(totalIncome, profession);
 	}
 
