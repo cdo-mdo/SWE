@@ -20,20 +20,7 @@ public class MortgageCalculator {
 		}
 
  		double totalIncome = monthlyIncome + monthlyIncomePartner * 0.94;
-
 		return computeMaxMortgage(totalIncome, profession);
-	}
-
-	private int ageOf(int yearOfBirt, int month, int day) {
-		//calculate age
-		LocalDate today = LocalDate.now();                          //Today's date
-		LocalDate birthday = LocalDate.of(yearOfBirt, month, day);  //Birth date
-
-		Period p = Period.between(birthday, today);
-		int age = p.getYears();
-		System.out.println(age);
-
-		return age;
 	}
 
 	private double computeMaxMortgage(double monthlyIncome, String profession) {
