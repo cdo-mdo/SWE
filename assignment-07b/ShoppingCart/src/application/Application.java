@@ -3,7 +3,6 @@ package application;
 import products.Product;
 import shoppingcart.ShoppingCart;
 
-
 public class Application {
 
     public static void main(String[] args) {

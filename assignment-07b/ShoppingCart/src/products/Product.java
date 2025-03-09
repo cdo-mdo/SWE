@@ -1,23 +1,23 @@
 package products;
 
 public class Product {
-    String productnumber;
+    String productNumber;
     double price;
     String description;
 
-    public Product(String productnumber, double price, String description) {
+    public Product(String productNumber, double price, String description) {
         super();
-        this.productnumber = productnumber;
+        this.productNumber = productNumber;
         this.price = price;
         this.description = description;
     }
 
-    public String getProductnumber() {
-        return productnumber;
+    public String getProductNumber() {
+        return productNumber;
     }
 
-    public void setProductnumber(String productnumber) {
-        this.productnumber = productnumber;
+    public void setProductNumber(String productNumber) {
+        this.productNumber = productNumber;
     }
 
     public double getPrice() {
