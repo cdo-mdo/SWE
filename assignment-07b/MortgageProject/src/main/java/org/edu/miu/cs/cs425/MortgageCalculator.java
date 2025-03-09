@@ -2,19 +2,20 @@ package org.edu.miu.cs.cs425;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.temporal.ChronoUnit;
 
 public class MortgageCalculator {
 
-	public double computeMaxMortgageSingle(int yearOfBirt, int month, int day, double monthlyIncome, String profession) {
-		if (ageOf(yearOfBirt, month, day) < 18) {
+	public double computeMaxMortgageSingle(LocalDate birthDate, double monthlyIncome, String profession) {
+		if (ChronoUnit.YEARS.between(birthDate, LocalDate.now()) < 18) {
 			return 0;
 		}
 
 		return computeMaxMortgage(monthlyIncome, profession);
 	}
 
-	public double computeMaxMortgageMarried(int yearOfBirt, int month, int day, double monthlyIncome, double monthlyIncomePartner, String profession) {
-		if (ageOf(yearOfBirt, month, day) < 18) {
+	public double computeMaxMortgageMarried(LocalDate birthDate, double monthlyIncome, double monthlyIncomePartner, String profession) {
+		if (ChronoUnit.YEARS.between(birthDate, LocalDate.now()) < 18) {
 			return 0;
 		}
 
