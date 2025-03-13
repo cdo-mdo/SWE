@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Management</title>
+    <link rel="stylesheet" href="/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/scripts.js" defer></script>
+</head>
+<body>
+<div class="container mt-4">
+    <h2 class="text-center">Student Management</h2>
+
+    <!-- Search Box -->
+    <input type="text" id="searchBox" class="form-control my-3"
+           placeholder="Search students..." autofocus>
+
+    <div class="row">
+        <!-- Left Sidebar - Register Student Form -->
+        <div class="col-md-4">
+            <div class="card p-3">
+                <h4 class="text-center">Register New Student</h4>
+                <form method="post" action="/students/save">
+                    <div class="mb-2">
+                        <label>Student Number *</label>
+                        <input type="text" name="studentNumber" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>First Name *</label>
+                        <input type="text" name="firstName" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>Middle Name (Optional)</label>
+                        <input type="text" name="middleName" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label>Last Name *</label>
+                        <input type="text" name="lastName" class="form-control" required>
+                    </div>
+                    <div class="mb-2">
+                        <label>CGPA (Optional)</label>
+                        <input type="number" step="0.01" name="cgpa" class="form-control">
+                    </div>
+                    <div class="mb-2">
+                        <label>Enrollment Date *</label>
+                        <input type="date" name="enrollmentDate" class="form-control" required>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" name="isInternational" class="form-check-input">
+                        <label class="form-check-label">International Student</label>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Register Student</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Right Section - Student List -->
+        <div class="col-md-8">
+            <div class="card p-3">
+                <h4 class="text-center">Student List</h4>
+                <table class="table table-striped" id="studentTable">
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0, 'studentId')">ID <i class="fas fa-sort"></i></th>
+                            <th onclick="sortTable(1, 'studentNumber')">Student Number <i class="fas fa-sort"></i></th>
+                            <th onclick="sortTable(2, 'firstName')">First Name <i class="fas fa-sort"></i></th>
+                            <th onclick="sortTable(3, 'middleName')">Middle Name <i class="fas fa-sort"></i></th>
+                            <th onclick="sortTable(4, 'lastName')">Last Name <i class="fas fa-sort"></i></th>
+                            <th onclick="sortTable(5, 'cgpa')">CGPA <i class="fas fa-sort"></i></th>
+                            <th onclick="sortTable(6, 'enrollmentDate')">Enrollment Date <i class="fas fa-sort"></i></th>
+                            <th>International</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                    <tr th:each="student : ${students.content}">
+                        <td th:text="${student.studentId}"></td>
+                        <td th:text="${student.studentNumber}"></td>
+                        <td th:text="${student.firstName}"></td>
+                        <td th:text="${student.middleName}"></td>
+                        <td th:text="${student.lastName}"></td>
+                        <td th:text="${#numbers.formatDecimal(student.cgpa, 1, 2)}"></td>
+                        <td th:text="${student.enrollmentDate}"></td>
+                        <td th:text="${student.isInternational ? 'Yes' : 'No'}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between mt-3">
+                    <button id="prevButton" class="btn btn-primary" onclick="prevPage()">Previous</button>
+                    <span>Page <span id="pageNumber">1</span></span>
+                    <button id="nextButton" class="btn btn-primary" onclick="nextPage()">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<style>
+    th {
+        cursor: pointer; /* ✅ Changes mouse cursor on hover */
+    }
+</style>
+<style>
+    th.sorted-asc {
+        background-color: #cce5ff !important; /* Light Blue for ASC */
+    }
+    th.sorted-desc {
+        background-color: #ffcccc !important; /* Light Red for DESC */
+    }
+</style>
