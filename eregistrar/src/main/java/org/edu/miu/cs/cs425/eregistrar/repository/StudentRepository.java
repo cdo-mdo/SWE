@@ -26,4 +26,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     // Custom delete method for bulk delete
     @Transactional
     void deleteByStudentIdIn(List<Long> studentIds);
+
 }
