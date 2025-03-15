@@ -30,23 +30,9 @@ public class StudentController {
         return "students"; // ✅ Returns Thymeleaf HTML page
     }
 
-//    @PostMapping("/save")
-//    public String saveStudent(@ModelAttribute Student student) {
-//        studentService.saveStudent(student);
-//        return "redirect:/students";
-//    }
-//
-//    // Delete a single student
-//    @GetMapping("/delete/{id}")
-//    public String deleteStudent(@PathVariable Long id) {
-//        studentService.deleteStudent(id);
-//        return "redirect:/students";
-//    }
-//
-//    // Bulk delete students
-//    @GetMapping("/delete")
-//    public String deleteStudents(@RequestParam List<Long> ids) {
-//        studentService.deleteStudents(ids);
-//        return "redirect:/students";
-//    }
+    @GetMapping("/**")
+    public String handleUnknownRequests() {
+        return "redirect:/students";
+    }
+
 }
