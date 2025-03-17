@@ -1,19 +1,70 @@
 package org.edu.miu.cs.cs425.eregistrarwebapi;
 
+import org.edu.miu.cs.cs425.eregistrarwebapi.model.Role;
+import org.edu.miu.cs.cs425.eregistrarwebapi.model.RoleName;
 import org.edu.miu.cs.cs425.eregistrarwebapi.model.Student;
+import org.edu.miu.cs.cs425.eregistrarwebapi.model.User;
+import org.edu.miu.cs.cs425.eregistrarwebapi.repository.RoleRepository;
 import org.edu.miu.cs.cs425.eregistrarwebapi.repository.StudentRepository;
+import org.edu.miu.cs.cs425.eregistrarwebapi.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 @Component
 public class DataInitialization implements CommandLineRunner {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    private void initializeRoles() {
+        if (roleRepository.findByName(RoleName.ADMIN).isEmpty()) {
+            roleRepository.save(new Role(RoleName.ADMIN));
+        }
+        if (roleRepository.findByName(RoleName.REGISTRAR).isEmpty()) {
+            roleRepository.save(new Role(RoleName.REGISTRAR));
+        }
+        if (roleRepository.findByName(RoleName.STUDENT).isEmpty()) {
+            roleRepository.save(new Role(RoleName.STUDENT));
+        }
+    }
+
+    private void initializeUsers() {
+        createUserIfNotExists("admin", "admin123", RoleName.ADMIN);
+        createUserIfNotExists("registrar", "registrar123", RoleName.REGISTRAR);
+        createUserIfNotExists("student", "student123", RoleName.STUDENT);
+    }
+
+    private void createUserIfNotExists(String username, String rawPassword, RoleName roleName) {
+        if (userRepository.findByUsername(username).isEmpty()) {
+            User user = new User();
+            user.setUsername(username);
+            user.setPassword(passwordEncoder.encode(rawPassword));
+
+            Set<Role> roles = new HashSet<>();
+            roleRepository.findByName(roleName).ifPresent(roles::add);
+            user.setRoles(roles);
+
+            userRepository.save(user);
+            System.out.println("Created user: " + username + " with role " + roleName);
+        }
+    }
 
     private void createStudents() {
         for (int i = 0; i < 50; i++) {
@@ -59,7 +110,10 @@ public class DataInitialization implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
+        initializeRoles();
+        initializeUsers();
         createStudents();
     }
 }

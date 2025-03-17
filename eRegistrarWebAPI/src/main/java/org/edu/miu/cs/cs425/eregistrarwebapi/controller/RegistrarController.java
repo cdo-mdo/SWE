@@ -9,14 +9,23 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/student")
-public class StudentController {
+@RequestMapping("/api/registrar")
+public class RegistrarController {
     @Autowired
     private StudentService studentService;
+
+    @GetMapping("/list")
+    public List<Student> listStudents() {
+        return studentService.getAllStudents();
+    }
+
+    @PostMapping("/register")
+    public Student registerStudent(@RequestBody Student student) {
+        return studentService.registerStudent(student);
+    }
 
     @GetMapping("/get/{id}")
     public Optional<Student> getStudent(@PathVariable Long id) {
         return studentService.getStudentById(id);
     }
-
 }
