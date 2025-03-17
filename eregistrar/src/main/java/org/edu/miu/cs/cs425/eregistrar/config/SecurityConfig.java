@@ -23,7 +23,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        HttpSecurity httpSecurity = http
+        http
                 .csrf(csrf -> csrf.disable()) // Disable CSRF protection if not needed
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers("/student/**").hasAuthority("STUDENT")
                         .anyRequest().authenticated()
                 )
-                .formLogin(withDefaults());
+                .formLogin(withDefaults())
 
         return http.build();
     }
