@@ -1,0 +1,13 @@
+package org.edu.miu.cs.cs425.practice1;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class Practice1ApplicationTests {
+
+    @Test
+    void contextLoads() {
+    }
+
+}
